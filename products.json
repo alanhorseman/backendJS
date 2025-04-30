@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "title": "Remera Anime",
+    "description": "Remera con estampado de anime",
+    "price": 3000,
+    "thumbnail": "imagen.jpg",
+    "code": "A001",
+    "stock": 2
+  }
+]
