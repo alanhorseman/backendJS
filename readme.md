@@ -117,3 +117,6 @@ Los **metodos** de esta clase son:
 Al igual que el anterior json, `carts.json` contiene un array vacio `[]`.
 
 ---
+
+
+Por último, arme el .md y para darle un poco mas de diseño lo pase por un editor de Markdown online
