@@ -7,6 +7,7 @@ class ProductManager{
   }
 
   async getProducts(){
+    // se intenta acceder al json y se para a obj con .parse, sino devuelve un []
     try {
       const data = await fs.readFile(this.path, 'utf-8');
       return JSON.parse(data);
@@ -16,21 +17,26 @@ class ProductManager{
   }
 
   async getProductById(id) {
+    // se traen todos los productos y se busca el que coincida con su ID
     const products = await this.getProducts();
     return products.find(p => p.id === parseInt(id));
   }
 
   async addProduct(product) {
+    // agrega al json el nuevo producto, modificandolo con fs y retornando el nuevo producto con un id unico
     const products = await this.getProducts();
     
+    // se controla que no falten datos
     if (!product.title || !product.description || typeof product.price !== 'number' || !product.code || typeof product.stock !== 'number' || typeof product.status !== 'boolean' || !product.category || !Array.isArray(product.thumbnails)){
       throw new Error('Complete todos los campos');
     }
 
+    // se controla por su codigo de producto que no haya uno ya cargado
     if(products.some(p => p.code === product.code)){
       throw new Error(`Este producto ya existe. Cod del producto: ${product.code} ${product.title}`)
     }
 
+    //obtendo cuantos productos tengo, voy al ultimo y a su ID le sumo 1, si esta vacio le asigno 1
     const asignarID = products.length > 0 ? products[products.length - 1].id + 1 : 1;
     const newProduct = {id: asignarID, ...product};
 
@@ -41,17 +47,23 @@ class ProductManager{
   }
 
   async updateProduct(id, newData) {
+    // actualizo un producto con si ID y pasando la data del body
+
+    //obtengo todos los productos y busco su posicion por si ID
     const products = await this.getProducts();
     const index = products.findIndex(i => i.id === parseInt(id));
 
     if(index === -1) return null;
 
+    //se desestructura el producto actual, la info nueva que reemplazara, y se deja el mismo ID
     products[index] = {...products[index], ...newData, id: products[index].id}
     await fs.writeFile(this.path, JSON.stringify(products, null, 2));
     return products[index];
   }
 
   async deleteProduct(id){
+    // se elimina producto por su ID
+    
     const products = await this.getProducts();
     const filtered = products.filter(p => p.id !== parseInt(id));
     
