@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "id": 1,
+    "title": "Remera blanca estilo Tokyo",
+    "description": "Remera blanca lisa con estampado variable estilo Tokyo",
+    "code": "AA01",
+    "price": 4000,
+    "status": true,
+    "stock": 10,
+    "category": "remeras",
+    "thumbnails": [
+      "/img/remeraproducto.png"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Pack medias",
+    "description": "Medias soquetes X3",
+    "code": "AA03",
+    "price": 1400,
+    "status": true,
+    "stock": 23,
+    "category": "medias",
+    "thumbnails": [
+      "/img/mediasproducto.png"
+    ]
+  }
+]

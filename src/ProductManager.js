@@ -23,12 +23,12 @@ class ProductManager{
   async addProduct(product) {
     const products = await this.getProducts();
     
-    if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock){
+    if (!product.title || !product.description || typeof product.price !== 'number' || !product.code || typeof product.stock !== 'number' || typeof product.status !== 'boolean' || !product.category || !Array.isArray(product.thumbnails)){
       throw new Error('Complete todos los campos');
     }
 
     if(products.some(p => p.code === product.code)){
-      throw new Error(`Este producto ya existe. Cod del producto: ${product.code}`)
+      throw new Error(`Este producto ya existe. Cod del producto: ${product.code} ${product.title}`)
     }
 
     const asignarID = products.length > 0 ? products[products.length - 1].id + 1 : 1;
