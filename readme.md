@@ -7,13 +7,13 @@ En la sugerencia de esta 2da entrega, había 2 formas de realizarla. Decidí tom
 
 Importé `handlebars` y lo almacené en la variable hbs.
 
-```
+```js
 const hbs = require('express-handlebars');
 ```
 
 Configuré el `SocketManager` de la siguiente manera:
 
-```
+```js
 const { configSocket } = require('./src/SocketManager');
 const io = require('socket.io')(http);
 configSocket(io);
@@ -21,13 +21,13 @@ configSocket(io);
 
 Agregué el `endpoint` para las rutas de **view**.
 
-```
+```js
 app.use('/', viewRouter);
 ```
 
 Y configuré el `Handlebars`.
 
-```
+```js
 app.engine('handlebars', hbs.engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
@@ -38,20 +38,20 @@ app.set('views', path.join(__dirname, 'views'));
 
 Primero importo y hago una instancia de `ProductoManager` para manejar sus métodos.
 
-```
+```js
 const ProductManager = require('./ProductManager');
 const manager = new ProductManager('./data/products.json');
 ```
 
 Creo una variable **ioGlobal** y la instancio en *null*.
-```
+```js
 let ioGlobal = null;
 ```
 
 Creé 2 funciones flechas: **configSocket** y **emitProductUpdate**.
 
 `configSocket` va a establecer la conexión y mostrar los productos al usuario conectado.
-```
+```js
 const configSocket = (io) => {
   ioGlobal = io;
   
@@ -66,7 +66,7 @@ const configSocket = (io) => {
 ```
 
 `emitProductUpdate` en cambio va a mostrar los productos a todos los usuarios¨.
-```
+```js
 const emitProductUpdate = async () => {
   if (ioGlobal) {
     const products = await manager.getProducts();
@@ -77,7 +77,7 @@ const emitProductUpdate = async () => {
 
 Finalmente exporto ambas funciones.
 
-```
+```js
 module.exports = { configSocket, emitProductUpdate };
 ```
 ---
@@ -85,14 +85,14 @@ module.exports = { configSocket, emitProductUpdate };
 
 Por un lado importo `Express` y `Router`.
 
-```
+```js
 const express = require('express');
 const router = express.Router();
 ```
 
 Por el otro, importo e instancio también `ProductManager` para usarlo en la ruta */home*.
 
-```
+```js
 const ProductManager = require('../ProductManager');
 const manager = new ProductManager('./data/products.json');
 ```
@@ -100,7 +100,7 @@ const manager = new ProductManager('./data/products.json');
 Acá creo las rutas para */home* y */realtimeproducts*
 
 `/home` va a usar los métodos de **ProductManager** ya que no se va a actualizar en tiempo real.
-```
+```js
 router.get('/home', async (req, res) => {
   const products = await manager.getProducts();
   res.render('home', { products });
@@ -109,14 +109,14 @@ router.get('/home', async (req, res) => {
 
 En cambio `/realtimeproducts` no necesita de **ProductManager** ya que se maneja con *Socket.io*.
 
-```
+```js
 router.get('/realtimeproducts', async (req, res) => {
   res.render('realTimeProducts'); 
 });
 ```
 
 Y finalmente se exporta `Router`.
-```
+```js
 module.exports = router;
 ```
 ---
@@ -126,25 +126,25 @@ Creé el archivo `realtime.js` dentro de la carpeta */public/js* para usarlo del
 
 Comencé instanciando *io*
 
-```
+```js
 const socket = io();
 ```
 
 Se escucha el evento `'productList'` con **socket.on** y recibiendo por parámetro products.
-```
+```js
 socket.on('productList', (products) => {});
 ```
 
 Manipulando el `DOM`, se obtiene la lista de productos por su `ID` y se límpia.
 
-```
+```js
 const list = document.getElementById('product-list'); 
 list.innerHTML = '';
 ```
 
 Y hago uso de un `forEach` para iterar la lista y agregarle un nuevo ítem con los datos del producto, junto con un `if` para verificar si tiene una foto de producto.
 
-```
+```js
 products.forEach(p => {
     const li = document.createElement('li'); 
 
@@ -175,13 +175,13 @@ products.forEach(p => {
 
 Importé la función `emitProductUpdate` de **SocketManager**.
 
-```
+```js
 const { emitProductUpdate } = require('../SocketManager'); 
 ```
 
 Y lo agregué tanto al `POST` como al `DELETE`.
 
-```
+```js
 router.post("/", async (req, res) => {
   // Try-catch para intentar agregar un producto
   try {
@@ -194,7 +194,7 @@ router.post("/", async (req, res) => {
 })
 ```
 
-```
+```js
 router.delete("/:pid", async (req, res) => {
   // Eliminamos un producto por su ID enviado tambien por params
   const deleted = await manager.deleteProduct(req.params.pid);
@@ -208,7 +208,7 @@ router.delete("/:pid", async (req, res) => {
 
 Creé el *handlebars* para `/home` con la información estática.
 
-```
+```js
 <h1>Lista de productos (estática)</h1>
 <ul>
   {{#each products}}
@@ -236,7 +236,7 @@ Creé el *handlebars* para `/home` con la información estática.
 
 Y el *handlebars* para `/realtimeproducts` con la información dinámica que manejara el **socket.io**.
 
-```
+```js
 <h1>Lista de productos (tiempo real)</h1>
 <ul id="product-list"></ul>
 
