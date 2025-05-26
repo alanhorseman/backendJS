@@ -1,0 +1,8 @@
+{{!-- Con un each, itero sobre cada producto del array de products y lo coloco en una etiqueta li --}}
+
+<h1>Lista de productos (estática)</h1>
+<ul>
+  {{#each products}}
+    <li><strong>{{title}}</strong> - ${{price}}</li>
+  {{/each}}
+</ul>

@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
 const ProductManager = require('../ProductManager');
 const router = express.Router();
+const { emitProductUpdate } = require('../SocketManager'); 
 
 const manager = new ProductManager(path.join(__dirname, '../../data/products.json'));
 
@@ -24,6 +25,7 @@ router.post("/", async (req, res) => {
   // Try-catch para intentar agregar un producto
   try {
     const newProduct = await manager.addProduct(req.body);
+    await emitProductUpdate();
     res.status(201).json({newProduct});
   } catch (error) {
     res.status(400).json({error: "no se pudo agregar producto"});
@@ -41,6 +43,7 @@ router.delete("/:pid", async (req, res) => {
   // Eliminamos un producto por su ID enviado tambien por params
   const deleted = await manager.deleteProduct(req.params.pid);
   if (!deleted) return res.status(404).json({error: "No fue posible eliminar el producto"});
+  await emitProductUpdate();
   res.json({message: "Producto eliminado"})
 })
 

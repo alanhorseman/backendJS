@@ -6,8 +6,6 @@ const router = express.Router();
 const manager = new CartManager(path.join(__dirname, '../../data/carts.json'));
 
 
-
-
 router.post('/', async (req, res) => {
   // crea un nuevo carrito
   const cart = await manager.createCart()

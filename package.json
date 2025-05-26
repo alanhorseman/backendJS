@@ -1,8 +1,10 @@
 {
   "dependencies": {
     "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
     "multer": "^2.0.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "socket.io": "^4.8.1"
   },
   "name": "backendjs",
   "version": "1.0.0",
