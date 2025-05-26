@@ -3,6 +3,21 @@
 <h1>Lista de productos (estática)</h1>
 <ul>
   {{#each products}}
-    <li><strong>{{title}}</strong> - ${{price}}</li>
+    <li>
+      <h3>{{title}}</h3>
+      <p><strong>Descripción:</strong> {{description}}</p>
+      <p><strong>Código:</strong> {{code}}</p>
+      <p><strong>Precio:</strong> ${{price}}</p>
+      <p><strong>Stock:</strong> {{stock}}</p>
+      {{#if thumbnails}}
+        <p><strong>Imágenes:</strong></p>
+        <ul>
+          {{#each thumbnails}}
+            <li><img src="{{this}}" alt="Miniatura del producto" style="max-width: 100px; height: auto;"></li>
+          {{/each}}
+        </ul>
+      {{/if}}
+      <hr> {{!-- Una línea divisoria para separar productos --}}
+    </li>
   {{/each}}
 </ul>
