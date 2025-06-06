@@ -13,9 +13,6 @@ const { configSocket } = require('./src/SocketManager');
 const io = require('socket.io')(http);
 configSocket(io);
 
-// const uploader = require('./utils/uploader');
-
-
 const PORT = 8080;
 
 app.use(express.json());
@@ -26,14 +23,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewRouter);
-
-// app.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'public', 'formulario.html'))
-// })
-
-// app.post('/upload', uploader.single('file'), (req, res) => {
-//   res.send("Archivo subido");
-// });
 
 //HANDLEBARS
 app.engine('handlebars', hbs.engine());

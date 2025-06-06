@@ -1,11 +1,11 @@
 const socket = io();
 
-socket.on('productList', (products) => {
-  const list = document.getElementById('product-list'); // Obtengo la lista de productos por su ID
-  list.innerHTML = ''; // Limpio la lista
+socket.on("productList", (products) => {
+  const list = document.getElementById("product-list"); // Obtengo la lista de productos por su ID
+  list.innerHTML = ""; // Limpio la lista
 
-  products.forEach(p => {
-    const li = document.createElement('li'); 
+  products.forEach((p) => {
+    const li = document.createElement("li");
 
     let productHtml = `
       <h3>${p.title}</h3>
@@ -15,9 +15,11 @@ socket.on('productList', (products) => {
       <p><strong>Stock:</strong> ${p.stock} unidades</p>
     `;
 
+    productHtml += `<button onclick="deleteProduct('${p.id}')">Eliminar</button>`;
+
     if (p.thumbnails && p.thumbnails.length > 0) {
       productHtml += `<p><strong>Imágenes:</strong></p><ul>`;
-      p.thumbnails.forEach(thumbnail => {
+      p.thumbnails.forEach((thumbnail) => {
         productHtml += `<li><img src="${thumbnail}" alt="Miniatura del producto" style="max-width: 100px; height: auto;"></li>`;
       });
       productHtml += `</ul>`;
@@ -25,7 +27,11 @@ socket.on('productList', (products) => {
 
     productHtml += `<hr>`;
 
-    li.innerHTML = productHtml; 
-    list.appendChild(li); 
+    li.innerHTML = productHtml;
+    list.appendChild(li);
   });
 });
+
+function deleteProduct(id) {
+    socket.emit("deleteProduct", id);
+  }
