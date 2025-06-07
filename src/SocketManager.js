@@ -23,6 +23,17 @@ const configSocket = (io) => {
         console.log(`No se encontro producto con el id:${id}`);
       }
     });
+
+    socket.on("createProduct", async(newProduct) => {
+      const result = await manager.addProduct(newProduct);
+
+      if(result) {
+        console.log("Producto guardado");
+        emitProductUpdate()
+      } else {
+        console.log("No se pudo guardar producto");
+      }
+    })
   });
 };
 
